@@ -1,0 +1,239 @@
+# =========================================================
+# TriagePilot - Git Ignore
+# Flutter + Android + FastAPI
+# =========================================================
+
+
+# ---------------------------------------------------------
+# Flutter / Dart
+# ---------------------------------------------------------
+
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+
+# Generated Flutter files
+coverage/
+*.lock
+
+# Flutter generated plugin registrants
+**/generated_plugin_registrant.dart
+
+
+# ---------------------------------------------------------
+# Android / Gradle
+# ---------------------------------------------------------
+
+.gradle/
+.idea/
+
+# Android generated/build files
+android/.gradle/
+android/local.properties
+android/key.properties
+
+android/app/debug/
+android/app/profile/
+android/app/release/
+
+# Generated Android files
+android/.cxx/
+android/**/build/
+
+# APK / App Bundle
+*.apk
+*.aab
+
+# Native build outputs
+*.so
+
+
+# ---------------------------------------------------------
+# iOS
+# ---------------------------------------------------------
+
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/ephemeral/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+
+# Xcode
+*.xcuserstate
+xcuserdata/
+DerivedData/
+
+# iOS build
+*.ipa
+
+
+# ---------------------------------------------------------
+# macOS
+# ---------------------------------------------------------
+
+macos/Pods/
+macos/Flutter/ephemeral/
+macos/Flutter/Generated.xcconfig
+macos/Flutter/flutter_export_environment.sh
+
+
+# ---------------------------------------------------------
+# Web
+# ---------------------------------------------------------
+
+web/.dart_tool/
+web/build/
+
+
+# ---------------------------------------------------------
+# Windows
+# ---------------------------------------------------------
+
+windows/flutter/ephemeral/
+windows/runner/GeneratedPluginRegistrant.cpp
+windows/runner/generated_plugin_registrant.h
+windows/runner/generated_plugin_registrant.cc
+
+
+# ---------------------------------------------------------
+# Linux
+# ---------------------------------------------------------
+
+linux/flutter/ephemeral/
+
+
+# ---------------------------------------------------------
+# Python / FastAPI Backend
+# ---------------------------------------------------------
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python packaging
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Type checking / linters
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+
+# ---------------------------------------------------------
+# FastAPI / Backend local files
+# ---------------------------------------------------------
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# Local environment configuration
+.env
+.env.*
+!.env.example
+
+
+# ---------------------------------------------------------
+# Secrets / Credentials
+# ---------------------------------------------------------
+
+# Firebase
+firebase_config.json
+google-services.json
+GoogleService-Info.plist
+
+# Service account credentials
+service-account*.json
+*-service-account.json
+
+# API keys
+secrets.json
+credentials.json
+
+# Local configuration
+config.local.*
+*.secret
+
+
+# ---------------------------------------------------------
+# IDEs / Editors
+# ---------------------------------------------------------
+
+# VS Code
+.vscode/
+
+# JetBrains / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+
+# ---------------------------------------------------------
+# Operating System
+# ---------------------------------------------------------
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# Linux
+*~
+
+
+# ---------------------------------------------------------
+# Temporary files
+# ---------------------------------------------------------
+
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Crash dumps
+*.dmp
+
+
+# ---------------------------------------------------------
+# Local development files
+# ---------------------------------------------------------
+
+# Personal notes
+TODO.local
+NOTES.local
+
+# Environment-specific files
+*.local
