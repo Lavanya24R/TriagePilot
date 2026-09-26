@@ -1,17 +1,4 @@
 # triagepilot
 
-A new Flutter project.
+It is an offline-first emergency triage system in which a victim phone detects or receives a distress trigger, structures the incident, and delivers prioritized information to a responder phone. The responder remains the decision-maker; the system does not auto-dispatch or make medical decisions.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
