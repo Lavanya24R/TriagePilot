@@ -1,8 +1,16 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime, timezone
 from typing import List
 
 app = FastAPI(title="TriagePilot Backend")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 connected_clients: List[WebSocket] = []
 
