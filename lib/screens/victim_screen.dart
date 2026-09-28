@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import '../services/api_service.dart';
+import '../services/sensor_service.dart';
 
 import 'package:flutter/material.dart';
 
@@ -12,18 +13,13 @@ class VictimScreen extends StatefulWidget {
 }
 
 class _VictimScreenState extends State<VictimScreen> {
+  late final SensorService _sensorService;
+  String _alertType = 'manual_sos';
+  String _alertMessage = 'Emergency SOS triggered';
   Timer? _countdownTimer;
-
   int _countdown = 10;
-
   bool _countdownActive = false;
   bool _alertSent = false;
-
-  @override
-  void dispose() {
-    _countdownTimer?.cancel();
-    super.dispose();
-  }
 
   void _triggerSOS() {
     setState(() {
@@ -62,18 +58,52 @@ class _VictimScreenState extends State<VictimScreen> {
     });
   }
 
+  void _handleFallDetected() {
+    debugPrint('🚨 VictimScreen received fall detection');
+
+    if (_countdownActive || _alertSent) {
+      debugPrint('⚠️ Alert already active. Ignoring fall detection.');
+      return;
+    }
+    _alertType = 'fall_detected';
+    _alertMessage = 'Possible fall detected';
+
+    _triggerSOS();
+  }
+
   Future<void> _sendEmergencyAlert() async {
     debugPrint('🚨 Sending emergency alert...');
-    final success = await ApiService.sendEmergencyAlert();
-    if (success) {debugPrint('✅ Emergency alert delivered to backend');} 
-    else {debugPrint('❌ Emergency alert could not reach backend');}
+
+    final success = await ApiService.sendEmergencyAlert(
+      type: _alertType,
+      message: _alertMessage,
+    );
+
+    if (success) {
+      debugPrint('✅ Emergency alert sent successfully');
+      setState(() {
+        _alertSent = true;
+      });
+    } else {
+      debugPrint('❌ Failed to send emergency alert');
+    }
   }
 
   void _resetAlert() {
     setState(() {
       _alertSent = false;
       _countdown = 10;
+      _alertType = 'manual_sos';
+      _alertMessage = 'Emergency SOS triggered';
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _sensorService = SensorService(onFallDetected: _handleFallDetected);
+
+    _sensorService.startListening();
   }
 
   @override
@@ -88,6 +118,13 @@ class _VictimScreenState extends State<VictimScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _sensorService.stopListening();
+    _countdownTimer?.cancel();
+    super.dispose();
   }
 
   Widget _buildContent() {
