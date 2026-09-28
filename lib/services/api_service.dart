@@ -10,19 +10,25 @@ class ApiService {
   static Future<void> _saveOfflineAlert({
     required String type,
     required String message,
+    double? latitude,
+    double? longitude,
   }) async {
     await DatabaseService.insertAlert(
       type: type,
       severity: 'high',
       message: message,
+      latitude: latitude,
+      longitude: longitude,
     );
 
-    print('📴 Alert queued because network is unavailable');
+    print('💾 Alert saved to offline queue');
   }
 
   static Future<bool> sendEmergencyAlert({
     required String type,
     required String message,
+    double? latitude,
+    double? longitude,
   }) async {
     try {
       final response = await http
@@ -33,6 +39,8 @@ class ApiService {
               'type': type,
               'severity': 'high',
               'message': message,
+              'latitude': latitude,
+              'longitude': longitude,
             }),
           )
           .timeout(const Duration(seconds: 5));
@@ -44,13 +52,23 @@ class ApiService {
         return true;
       }
 
-      await _saveOfflineAlert(type: type, message: message);
+      await _saveOfflineAlert(
+        type: type,
+        message: message,
+        latitude: latitude,
+        longitude: longitude,
+      );
 
       return false;
     } catch (e) {
       print('⚠️ Network unavailable: $e');
 
-      await _saveOfflineAlert(type: type, message: message);
+      await _saveOfflineAlert(
+        type: type,
+        message: message,
+        latitude: latitude,
+        longitude: longitude,
+      );
 
       return false;
     }

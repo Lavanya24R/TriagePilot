@@ -18,6 +18,8 @@ class OfflineQueueService {
       final success = await ApiService.sendEmergencyAlert(
         type: alert['type'] as String,
         message: alert['message'] as String,
+        latitude: alert['latitude'] as double?,
+        longitude: alert['longitude'] as double?,
       );
 
       if (success) {

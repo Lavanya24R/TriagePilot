@@ -53,7 +53,9 @@ async def receive_alert(alert: dict):
         "message": alert.get(
             "message",
             "Emergency SOS triggered"
-        )
+        ),
+        "latitude": alert.get("latitude"),
+        "longitude": alert.get("longitude"),
     }
 
     print("\n🚨 EMERGENCY ALERT")

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import '../services/api_service.dart';
 import '../services/sensor_service.dart';
+import '../services/connectivity_service.dart';
+import '../services/location_service.dart';
 
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ class VictimScreen extends StatefulWidget {
 
 class _VictimScreenState extends State<VictimScreen> {
   late final SensorService _sensorService;
+  late final ConnectivityService _connectivityService;
   String _alertType = 'manual_sos';
   String _alertMessage = 'Emergency SOS triggered';
   Timer? _countdownTimer;
@@ -74,18 +77,37 @@ class _VictimScreenState extends State<VictimScreen> {
   Future<void> _sendEmergencyAlert() async {
     debugPrint('🚨 Sending emergency alert...');
 
+    final position = await LocationService.getCurrentLocation();
+
+    double? latitude;
+    double? longitude;
+
+    if (position != null) {
+      latitude = position.latitude;
+      longitude = position.longitude;
+
+      debugPrint('📍 Alert location: $latitude, $longitude');
+    } else {
+      debugPrint('⚠️ Could not get location');
+    }
+
     final success = await ApiService.sendEmergencyAlert(
       type: _alertType,
       message: _alertMessage,
+      latitude: latitude,
+      longitude: longitude,
     );
 
     if (success) {
       debugPrint('✅ Emergency alert sent successfully');
-      setState(() {
-        _alertSent = true;
-      });
+
+      if (mounted) {
+        setState(() {
+          _alertSent = true;
+        });
+      }
     } else {
-      debugPrint('❌ Failed to send emergency alert');
+      debugPrint('📴 Alert stored for retry');
     }
   }
 
@@ -101,9 +123,12 @@ class _VictimScreenState extends State<VictimScreen> {
   @override
   void initState() {
     super.initState();
+
     _sensorService = SensorService(onFallDetected: _handleFallDetected);
+    _connectivityService = ConnectivityService();
 
     _sensorService.startListening();
+    _connectivityService.startListening();
   }
 
   @override
@@ -123,6 +148,7 @@ class _VictimScreenState extends State<VictimScreen> {
   @override
   void dispose() {
     _sensorService.stopListening();
+    _connectivityService.stopListening();
     _countdownTimer?.cancel();
     super.dispose();
   }
@@ -188,6 +214,22 @@ class _VictimScreenState extends State<VictimScreen> {
         Text(
           'You will have 10 seconds to cancel.',
           style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
+        ),
+        const SizedBox(height: 30),
+
+        ElevatedButton.icon(
+          onPressed: () async {
+            final position = await LocationService.getCurrentLocation();
+
+            if (position != null) {
+              debugPrint(
+                '📍 TEST LOCATION: '
+                '${position.latitude}, ${position.longitude}',
+              );
+            }
+          },
+          icon: const Icon(Icons.location_on),
+          label: const Text('TEST GPS'),
         ),
       ],
     );
