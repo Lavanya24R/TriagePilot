@@ -41,6 +41,8 @@ dependencies:
   path: ^1.9.1
   connectivity_plus: ^7.3.1
   geolocator: ^14.1.1
+  vibration: ^3.2.1
+  audioplayers: ^6.8.1
 
 dev_dependencies:
   flutter_test:

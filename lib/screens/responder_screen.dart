@@ -3,13 +3,22 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-
 String formatTimestamp(String timestamp) {
   final dateTime = DateTime.parse(timestamp).toLocal();
 
   const months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
 
   final day = dateTime.day.toString().padLeft(2, '0');
@@ -19,8 +28,8 @@ String formatTimestamp(String timestamp) {
   final hour = dateTime.hour == 0
       ? 12
       : dateTime.hour > 12
-          ? dateTime.hour - 12
-          : dateTime.hour;
+      ? dateTime.hour - 12
+      : dateTime.hour;
 
   final minute = dateTime.minute.toString().padLeft(2, '0');
   final period = dateTime.hour >= 12 ? 'PM' : 'AM';
@@ -216,6 +225,9 @@ class _ResponderScreenState extends State<ResponderScreen> {
 
     final incidentId = incident['id']?.toString() ?? 'Unknown';
 
+    final latitude = incident['latitude'];
+    final longitude = incident['longitude'];
+
     final timestamp = formatTimestamp(_incident!['timestamp']);
 
     return SingleChildScrollView(
@@ -256,6 +268,16 @@ class _ResponderScreenState extends State<ResponderScreen> {
                   _infoRow('Message', message),
 
                   const Divider(height: 28),
+
+                  if (latitude != null && longitude != null) ...[
+                    _infoRow(
+                      'Location',
+                      '${(latitude as num).toStringAsFixed(6)}, '
+                          '${(longitude as num).toStringAsFixed(6)}',
+                    ),
+
+                    const Divider(height: 28),
+                  ],
 
                   _infoRow('Received', timestamp),
                 ],

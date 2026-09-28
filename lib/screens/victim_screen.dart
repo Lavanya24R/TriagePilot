@@ -215,22 +215,6 @@ class _VictimScreenState extends State<VictimScreen> {
           'You will have 10 seconds to cancel.',
           style: TextStyle(color: Colors.grey.shade500, fontSize: 13),
         ),
-        const SizedBox(height: 30),
-
-        ElevatedButton.icon(
-          onPressed: () async {
-            final position = await LocationService.getCurrentLocation();
-
-            if (position != null) {
-              debugPrint(
-                '📍 TEST LOCATION: '
-                '${position.latitude}, ${position.longitude}',
-              );
-            }
-          },
-          icon: const Icon(Icons.location_on),
-          label: const Text('TEST GPS'),
-        ),
       ],
     );
   }
