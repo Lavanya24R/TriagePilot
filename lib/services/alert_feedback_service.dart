@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:vibration/vibration.dart';
+import '../services/alert_feedback_service.dart';
 
 class AlertFeedbackService {
   static final AudioPlayer _audioPlayer = AudioPlayer();
