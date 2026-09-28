@@ -210,13 +210,23 @@ class _ResponderScreenState extends State<ResponderScreen> {
     final severity =
         incident['severity']?.toString().toUpperCase() ?? 'UNKNOWN';
 
-    final type = incident['type']?.toString() ?? 'Unknown';
+    final rawType = incident['type']?.toString() ?? 'unknown';
+    final typeLabel = _incidentTypeLabel(rawType);
 
     final message = incident['message']?.toString() ?? 'No message';
 
     final incidentId = incident['id']?.toString() ?? 'Unknown';
 
     final timestamp = formatTimestamp(_incident!['timestamp']);
+
+    // Location — present for all three SOS types
+    final latitude = incident['latitude'];
+    final longitude = incident['longitude'];
+    final hasLocation = latitude != null && longitude != null;
+    final locationText = hasLocation
+        ? '${(latitude as num).toStringAsFixed(5)}, '
+          '${(longitude as num).toStringAsFixed(5)}'
+        : 'Not available';
 
     return SingleChildScrollView(
       child: Column(
@@ -245,7 +255,7 @@ class _ResponderScreenState extends State<ResponderScreen> {
 
                   const Divider(height: 28),
 
-                  _infoRow('Incident Type', type),
+                  _infoRow('Incident Type', typeLabel),
 
                   const Divider(height: 28),
 
@@ -254,6 +264,14 @@ class _ResponderScreenState extends State<ResponderScreen> {
                   const Divider(height: 28),
 
                   _infoRow('Message', message),
+
+                  const Divider(height: 28),
+
+                  _infoRow(
+                    'Location',
+                    locationText,
+                    valueColor: hasLocation ? null : Colors.grey,
+                  ),
 
                   const Divider(height: 28),
 
@@ -295,6 +313,21 @@ class _ResponderScreenState extends State<ResponderScreen> {
         ],
       ),
     );
+  }
+
+  /// Returns a human-readable label for the incident type field.
+  /// Supports all three SOS trigger types without breaking unknown types.
+  String _incidentTypeLabel(String rawType) {
+    switch (rawType) {
+      case 'manual_sos':
+        return 'Manual SOS 🆘';
+      case 'fall_detected':
+        return 'Fall Detected 📉';
+      case 'speech_detected':
+        return 'Speech Detected 🎤';
+      default:
+        return rawType;
+    }
   }
 
   Widget _infoRow(String label, String value, {Color? valueColor}) {
